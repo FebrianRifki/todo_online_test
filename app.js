@@ -18,4 +18,4 @@ app.use('/', function (req, res) {
 // const todoRoute = require('./app/routes/todo_routes');
 // app.use('/activity-groups', todoRoute);
 
-app.listen(3030, () => console.log('Server Berjalan di Port: 3030'));
+app.listen(3030, () => console.log('Server is running on Port: 3030'));

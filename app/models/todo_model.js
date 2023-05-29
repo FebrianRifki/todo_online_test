@@ -37,7 +37,7 @@ Todo.getAll = (id) => {
 
 Todo.getOne = (id) => {
     return new Promise((resolve, reject) => {
-        sql.query("SELECT * FROM todos WHERE todo_id = ?", id, (error, data) => {
+        sql.query("SELECT * FROM todos WHERE todo_id = ?", [id], (error, data) => {
             if (error) {
                 console.log("error", error);
                 reject(error);
@@ -56,9 +56,10 @@ Todo.update = (id, data) => {
                 console.log("error", error);
                 reject(error);
             } else {
-                sql.query("SELECT * FROM todos WHERE todo_id = ?", id, (err, result) => {
+                sql.query("SELECT * FROM todos WHERE todo_id = ?", [id], (err, result) => {
                     resolve(result);
                 });
+                // resolve(result);
             }
         });
     });

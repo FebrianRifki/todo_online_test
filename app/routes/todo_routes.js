@@ -11,10 +11,10 @@ todoRoutes.get('/todo-items/:id', todo.findOneData)
 todoRoutes.post('/todo-items', todo.createToDo);
 
 // Update activity data
-todoRoutes.patch('/todo-items/:id', todo.updateActivity);
+todoRoutes.patch('/todo-items/:id', todo.updateTodo);
 
 // Delete activity data
-todoRoutes.delete('/todo-items/:id', todo.deleteActivity);
+todoRoutes.delete('/todo-items/:id', todo.deleteTodo);
 
 
 module.exports = todoRoutes;

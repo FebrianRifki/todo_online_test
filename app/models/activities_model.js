@@ -35,7 +35,7 @@ Activity.getAll = () => {
 
 Activity.getOne = (id) => {
     return new Promise((resolve, reject) => {
-        sql.query("SELECT * FROM activities WHERE activity_id = ?", id, (error, data) => {
+        sql.query("SELECT * FROM activities WHERE activity_id = ?", [id], (error, data) => {
             if (error) {
                 console.log("error", error);
                 reject(error);
@@ -53,7 +53,7 @@ Activity.update = (id, data) => {
                 console.log("error", error);
                 reject(error);
             } else {
-                sql.query("SELECT * FROM activities WHERE activity_id = ?", id, (err, result) => {
+                sql.query("SELECT * FROM activities WHERE activity_id = ?", [id], (err, result) => {
                     resolve(result);
                 });
             }
