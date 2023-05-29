@@ -1,4 +1,4 @@
-const sql = require('./db');
+const { connection } = require('./db');
 
 const Todo = function (todo) {
     this.title = todo.title;
@@ -9,73 +9,53 @@ const Todo = function (todo) {
     this.updated_at = todo.updatedAt || this.createdAt;
 }
 
-Todo.create = (newTodo) => {
-    return new Promise((resolve, reject) => {
-        sql.query("INSERT INTO todos SET ?", newTodo, (error, result) => {
-            if (error) {
-                console.log("error: ", error);
-                reject(error);
-            }
-            const insertedData = { ...newTodo, todo_id: result.insertId };
-            resolve(insertedData);
-        });
-    });
-}
-
-Todo.getAll = (id) => {
-    return new Promise((resolve, reject) => {
-        sql.query("SELECT * FROM todos WHERE activity_group_id = ?", id, (error, result) => {
-            if (error) {
-                console.log(error);
-                reject(error);
-            } else {
-                resolve(result);
-            }
-        });
-    });
-}
-
-Todo.getOne = (id) => {
-    return new Promise((resolve, reject) => {
-        sql.query("SELECT * FROM todos WHERE todo_id = ?", [id], (error, data) => {
-            if (error) {
-                console.log("error", error);
-                reject(error);
-            } else {
-                resolve(data);
-            }
-        });
-    });
+Todo.create = async (newTodo) => {
+    try {
+        const result = await connection.query("INSERT INTO todos SET ?", [newTodo]);
+        const insertedData = { ...newTodo, activity_id: result.insertId };
+        return insertedData;
+    } catch (error) {
+        console.log(error);
+    }
 };
 
+Todo.getAll = async (id) => {
+    try {
+        const [result] = await connection.query('SELECT * FROM todos WHERE activity_group_id = ?', [id]);
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
 
-Todo.update = (id, data) => {
-    return new Promise((resolve, reject) => {
-        sql.query("UPDATE todos SET title = ?, priority= ?, is_active= ?, updated_at = ? WHERE todo_id = ?", [data.title, data.priority, data.is_active, data.updated_at, id], (error, res) => {
-            if (error) {
-                console.log("error", error);
-                reject(error);
-            } else {
-                sql.query("SELECT * FROM todos WHERE todo_id = ?", [id], (err, result) => {
-                    resolve(result);
-                });
-                // resolve(result);
-            }
-        });
-    });
-}
+Todo.getOne = async (id) => {
+    try {
+        const [result] = await connection.query("SELECT * FROM todos WHERE todo_id = ?", [id]);
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
 
-Todo.delete = (id) => {
-    return new Promise((resolve, reject) => {
-        sql.query("DELETE FROM todos WHERE todo_id = ?", id, (error, result) => {
-            if (error) {
-                console.log("error", error);
-                reject(error);
-            } else {
-                resolve(result);
-            }
-        });
-    })
-}
+Todo.update = async (id, data) => {
+    try {
+        const result = await connection.query("UPDATE todos SET title = ?, priority= ?, is_active= ?, updated_at = ? WHERE todo_id = ?", [data.title, data.priority, data.is_active, data.updated_at, id]);
+        if (result) {
+            const updatedData = { todo_id: id, ...data };
+            return updatedData;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+Todo.delete = async (id) => {
+    try {
+        const result = await connection.query("DELETE FROM todos WHERE todo_id = ?", [id]);
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 module.exports = Todo;

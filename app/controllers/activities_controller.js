@@ -1,5 +1,6 @@
 const { request } = require('express');
 const Activity = require('../models/activities_model');
+const { connection } = require('../models/db');
 
 
 // Display all activity Data
@@ -22,7 +23,7 @@ exports.getAllActivity = async (req, res) => {
     } catch (error) {
         res.status(500).send({
             status: "Failed",
-            message: "Internal Server Error",
+            message: error.message,
             data: {}
 
         });
@@ -119,7 +120,7 @@ exports.updateActivity = async (req, res) => {
             }
             let result = await Activity.update(id, newData);
             if (result.length != 0) {
-                let data = result[0];
+                let data = result;
                 res.status(200).send({
                     "status": "Success",
                     "message": "Success",
@@ -150,7 +151,7 @@ exports.updateActivity = async (req, res) => {
     } catch (error) {
         res.status(500).send({
             "status": "Failed",
-            "message": "Internal Server Error!",
+            "message": error.message,
             "data": {}
         })
     }

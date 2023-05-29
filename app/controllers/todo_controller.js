@@ -141,7 +141,7 @@ exports.updateTodo = async (req, res) => {
             }
             let result = await Todo.update(id, newData);
             if (result.length != 0) {
-                let data = result[0];
+                let data = result;
                 res.status(200).send({
                     "status": "Success",
                     "message": "Success",
