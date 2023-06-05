@@ -23,6 +23,7 @@ const migration = async () => {
                 title VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL,
                 created_at DATETIME NOT NULL,
+                updated_at DATETIME NOT NULL,
                 PRIMARY KEY (activity_id)
             )
         `);
@@ -35,7 +36,7 @@ const migration = async () => {
                 title VARCHAR(255) NOT NULL,
                 priority VARCHAR(255) NOT NULL,
                 is_active BOOLEAN NOT NULL,
-                created_at DATETIME NOT NULL,
+                updated_at DATETIME NOT NULL,
                 PRIMARY KEY (todo_id)
             )
         `);
